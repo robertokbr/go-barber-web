@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { Container, Background, Content } from './styles';
 import logo from '../../assets/logo.svg';
@@ -22,10 +23,10 @@ const SignIn: React.FC = () => {
           <Button type="submit">Entrar</Button>
           <a href="forgot">Esqueci Minha Senha</a>
         </form>
-        <a href="createAccount">
+        <Link to="/signUp">
           <FiLogIn />
           Criar Conta
-        </a>
+        </Link>
       </Content>
       <Background />
     </Container>
