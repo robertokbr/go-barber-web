@@ -28,6 +28,7 @@ Complete toolkit to improved the barbershop bussines!
 
 
  <img src="https://github.com/robertokbr/GoBarber-Web/blob/master/.Github/signin.png"/>
+  <img src="https://github.com/robertokbr/GoBarber-Web/blob/master/.Github/signout.png"/>
  <img src="https://github.com/robertokbr/GoBarber-Web/blob/master/.Github/portail.png"/>
 
 
