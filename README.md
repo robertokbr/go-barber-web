@@ -35,10 +35,14 @@ Complete toolkit to improved the barbershop bussines!
 # 🚧 In progress
 
 - [ReactJs with Typescript](https://reactjs.org) - A JavaScript library for building user interfaces
+- [react-router-dom]()
 - [Axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and NodeJs
 - [Styled-components]()
-- [Polished]()
-- [React-icons]()
+- [Yup]()
+- [Uuidv4]()
+- [Eslint]()
+- [Prettier]()
+- [EditorConfig]()
 
 ## 🎈 Project Style
 
