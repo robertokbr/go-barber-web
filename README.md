@@ -37,9 +37,10 @@ Complete toolkit to improved the barbershop bussines!
 - [ReactJs with Typescript](https://reactjs.org) - A JavaScript library for building user interfaces
 - [react-router-dom]()
 - [Axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and NodeJs
-- [Styled-components]()
-- [Yup]()
 - [Uuidv4]()
+- [Yup]()
+- [Styled-components]()
+- [React-Spring](https://www.react-spring.io/)
 - [Eslint]()
 - [Prettier]()
 - [EditorConfig]()
