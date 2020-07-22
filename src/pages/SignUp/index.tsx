@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { FiArrowLeft, FiMail, FiLock, FiUser } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
@@ -9,27 +9,53 @@ import logoImg from '../../assets/logo.svg';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import getValidationErrors from '../../utils/getValidationErrors';
+import api from '../../services/api';
+import { useToast } from '../../hooks/toast';
+
+interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const SignUp: React.FC = () => {
+  const history = useHistory();
+  const { addToast } = useToast();
   const formRef = useRef<FormHandles>(null);
-  const handleSubmit = useCallback(async (data: object) => {
-    try {
-      formRef.current?.setErrors({});
-      const schema = Yup.object().shape({
-        name: Yup.string().required('O nome é obrigatório'),
-        email: Yup.string()
-          .required('O E-mail é obrigatório')
-          .email('Digite um E-mail válido'),
-        password: Yup.string().min(6, 'A senha deve ter no minimo 6 digitos'),
-      });
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-    } catch (err) {
-      const errors = getValidationErrors(err);
-      formRef.current?.setErrors(errors);
-    }
-  }, []);
+  const handleSubmit = useCallback(
+    async (data: SignUpFormData) => {
+      try {
+        formRef.current?.setErrors({});
+        const schema = Yup.object().shape({
+          name: Yup.string().required('O nome é obrigatório'),
+          email: Yup.string()
+            .required('O E-mail é obrigatório')
+            .email('Digite um E-mail válido'),
+          password: Yup.string().min(6, 'A senha deve ter no minimo 6 digitos'),
+        });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+        await api.post('/users', data);
+        history.push('/');
+        addToast({
+          type: 'success',
+          title: 'Cadastro realizado!',
+        });
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+        }
+        addToast({
+          type: 'error',
+          title: 'Erro no Cadastro',
+          description: 'O email utilizado ja possui cadastro',
+        });
+      }
+    },
+    [addToast, history],
+  );
 
   return (
     <Container>
