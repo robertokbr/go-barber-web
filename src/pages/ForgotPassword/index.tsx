@@ -1,6 +1,6 @@
 import React, { useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
+import { FiLogIn, FiMail } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
@@ -17,39 +17,33 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 
-interface SignFormData {
+interface ForgotPasswordFormData {
   email: string;
-  password: string;
 }
 
-const SignIn: React.FC = () => {
+const ForgotPassword: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { user, signIn } = useAuth();
   const { addToast, removeToast } = useToast();
 
   const handleSubmit = useCallback(
-    async (data: SignFormData) => {
+    async (data: ForgotPasswordFormData) => {
       try {
         formRef.current?.setErrors({});
         const schema = Yup.object().shape({
           email: Yup.string()
             .required('O E-mail é obrigatório')
             .email('Digite um E-mail válido'),
-          password: Yup.string().required(
-            'A senha deve ter no minimo 6 digitos',
-          ),
         });
         await schema.validate(data, {
           abortEarly: false,
         });
-        await signIn({
-          email: data.email,
-          password: data.password,
-        });
+
+        // recuperção de senha
+
         addToast({
           type: 'success',
-          title: 'Login Realizado!',
+          title: 'Email enviado!',
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -59,12 +53,12 @@ const SignIn: React.FC = () => {
         }
         addToast({
           type: 'error',
-          title: 'Erro na autenticação',
-          description: 'Ocorreu um erro no seu login, verifique seus dados',
+          title: 'Erro na recuperação de senha',
+          description: 'Ocorreu um erro, tente novamente',
         });
       }
     },
-    [signIn, addToast],
+    [addToast],
   );
 
   return (
@@ -73,20 +67,13 @@ const SignIn: React.FC = () => {
         <AnimationContainerSignIn>
           <img src={logo} alt="Gobarber" />
           <Form ref={formRef} onSubmit={handleSubmit}>
-            <h1>Faça seu Logon</h1>
+            <h1>Recuperar Senha</h1>
             <Input icon={FiMail} name="email" placeholder="E-mail" />
-            <Input
-              icon={FiLock}
-              name="password"
-              type="password"
-              placeholder="Senha"
-            />
-            <Button type="submit">Entrar</Button>
-            <Link to="/forgot-password">Esqueci Minha Senha</Link>
+            <Button type="submit">Recuperar</Button>
           </Form>
-          <Link to="/signup">
+          <Link to="/signin">
             <FiLogIn />
-            Criar Conta
+            Voltar ao Login
           </Link>
         </AnimationContainerSignIn>
       </Content>
@@ -95,4 +82,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default ForgotPassword;

@@ -4,12 +4,14 @@ import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import Dashboard from '../pages/Dashboard';
 import Route from './Route';
+import ForgotPassword from '../pages/ForgotPassword';
 
 const Routes: React.FC = () => (
   <Switch>
     <Route component={SignIn} path="/" exact />
     <Route component={SignUp} path="/signup" />
     <Route component={Dashboard} path="/dashboard" isPrivate />
+    <Route component={ForgotPassword} path="/forgot-password" />
   </Switch>
 );
 export default Routes;
