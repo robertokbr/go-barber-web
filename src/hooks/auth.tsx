@@ -2,9 +2,16 @@ import React, { createContext, useCallback, useState, useContext } from 'react';
 import { userInfo } from 'os';
 import api from '../services/api';
 
+interface User {
+  id: string;
+  avatar: string;
+  avatar_url: string;
+  name: string;
+}
+
 interface AuthState {
   token: string;
-  user: object;
+  user: User;
 }
 
 interface SignInCredentials {
@@ -13,7 +20,7 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  user: object;
+  user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
 }
@@ -39,7 +46,8 @@ export const AuthProvider: React.FC = ({ children }) => {
       password,
     });
 
-    const { token, user } = response.data;
+    const { token, user } = response.data as AuthState;
+    user.avatar_url = `http://localhost:3333/files/${user.avatar}`;
 
     localStorage.setItem('@GoBarber:token', token);
     localStorage.setItem('@GoBarber:user', JSON.stringify(user));
