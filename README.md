@@ -70,7 +70,8 @@ $ yarn start
 ```
 ---
 
-# 🤖API Repository: [GoBarberApi](https://github.com/robertokbr/GoBarber-API)
+# 🤖 API Repository: [GoBarberApi](https://github.com/robertokbr/GoBarber-API)
+# 🤳 Mobile Repository: [GoBarberMobile](https://github.com/robertokbr/GoBarber-Mobile)
 
 Roberto Junior :wave: [Join me on Linkedin!](https://www.linkedin.com/in/robertojrcdc/)
 
