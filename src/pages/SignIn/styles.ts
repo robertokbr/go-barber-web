@@ -57,6 +57,8 @@ export const AnimationContainerSignIn = styled.div`
       margin-top: 20px;
       text-decoration: none;
       transition: color 0.2s;
+      align-items: center;
+      justify-content: center;
 
       &:hover {
         color: ${shade(0.2, '#f4ede8')};
