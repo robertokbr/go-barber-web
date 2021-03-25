@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { FiPower, FiClock } from 'react-icons/fi';
 import DayPicker, { DayModifiers } from 'react-day-picker';
-import { isToday, format, parseISO, isAfter, parse } from 'date-fns';
+import { isToday, format, parseISO, isAfter } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-
 import { Link } from 'react-router-dom';
+
 import {
   Container,
   Header,
@@ -21,7 +21,7 @@ import logoImg from '../../assets/logo.svg';
 import { useAuth } from '../../hooks/auth';
 import 'react-day-picker/lib/style.css';
 import api from '../../services/api';
-
+import userAvatarDefaultImg from '../../assets/man.svg';
 import datesUtils from '../../utils/dates';
 import IAppointments from '../../models/IAppointments';
 import CustomAvatar from '../../components/CustomAvatar';
@@ -79,6 +79,7 @@ const Dashboard: React.FC = () => {
       .then(response => {
         const appointmentsFormated = response.data.map(appointment => ({
           ...appointment,
+          user_image: appointment.user.avatar_url || userAvatarDefaultImg,
           formatedHour: format(parseISO(appointment.date), 'HH:mm'),
         }));
 
@@ -166,12 +167,12 @@ const Dashboard: React.FC = () => {
             <span>{formatedDate}</span>
             <span>{formatedDay}</span>
           </p>
-          {isToday(selectedDate) && (
+          {isToday(selectedDate) && nextAppointments && (
             <NextAppointments>
               <strong>Atendimento a seguir</strong>
               <div>
                 <CustomAvatar size="normal">
-                  <img src={nextAppointments?.user.avatar_url} alt="Usuario" />
+                  <img src={nextAppointments?.user_image} alt="Usuario" />
                 </CustomAvatar>
                 <strong>{nextAppointments?.user.name}</strong>
                 <span>
@@ -194,7 +195,7 @@ const Dashboard: React.FC = () => {
                 </span>
                 <div>
                   <CustomAvatar size="small">
-                    <img src={appointment.user.avatar_url} alt="Usuario" />
+                    <img src={appointment.user_image} alt="Usuario" />
                   </CustomAvatar>
                   <strong>{appointment.user.name}</strong>
                 </div>
@@ -203,7 +204,7 @@ const Dashboard: React.FC = () => {
           </Section>
           <Section>
             <strong>Manhã</strong>
-            {!afternoonAppointments.length && (
+            {!morningAppointments.length && (
               <p>Nenhum agendamento para a manhã</p>
             )}
             {morningAppointments.map(appointment => (
@@ -214,7 +215,7 @@ const Dashboard: React.FC = () => {
                 </span>
                 <div>
                   <CustomAvatar size="small">
-                    <img src={appointment.user.avatar_url} alt="Usuario" />
+                    <img src={appointment.user_image} alt="Usuario" />
                   </CustomAvatar>
                   <strong>{appointment.user.name}</strong>
                 </div>
