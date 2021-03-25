@@ -1,5 +1,4 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
-import { userInfo } from 'os';
 import api from '../services/api';
 
 interface User {
@@ -35,8 +34,11 @@ export const AuthProvider: React.FC = ({ children }) => {
     const user = localStorage.getItem('@GoBarber:user');
 
     if (token && user) {
+      api.defaults.headers.authorization = `Bearer ${token}`;
+
       return { token, user: JSON.parse(user) };
     }
+
     return {} as AuthState;
   });
 
@@ -47,10 +49,12 @@ export const AuthProvider: React.FC = ({ children }) => {
     });
 
     const { token, user } = response.data as AuthState;
-    user.avatar_url = `http://localhost:3333/files/${user.avatar}`;
 
     localStorage.setItem('@GoBarber:token', token);
     localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+    api.defaults.headers.authorization = `Bearer ${token}`;
+
     setData({ user, token });
   }, []);
 
