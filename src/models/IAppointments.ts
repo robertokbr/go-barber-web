@@ -8,5 +8,6 @@ export default interface IAppointments {
   date: string;
   created_at: string;
   updated_at: string;
+  user_image: string;
   user: IUser;
 }
