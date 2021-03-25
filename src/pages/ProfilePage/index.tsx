@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { FiPower, FiClock } from 'react-icons/fi';
 import DayPicker, { DayModifiers } from 'react-day-picker';
-import { isToday, format, parseISO, isAfter, parse } from 'date-fns';
+import { isToday, format, parseISO, isAfter } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import { Link } from 'react-router-dom';
@@ -31,7 +31,7 @@ interface MonthAvailabilityItem {
   available: boolean;
 }
 
-const Dashboard: React.FC = () => {
+const ProfilePage: React.FC = () => {
   const { signOut, user } = useAuth();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -158,87 +158,8 @@ const Dashboard: React.FC = () => {
           </button>
         </HeaderContent>
       </Header>
-      <Content>
-        <Schedule>
-          <h1>Horários Agendados</h1>
-          <p>
-            {dayLabel && <span>{dayLabel}</span>}
-            <span>{formatedDate}</span>
-            <span>{formatedDay}</span>
-          </p>
-          {isToday(selectedDate) && (
-            <NextAppointments>
-              <strong>Atendimento a seguir</strong>
-              <div>
-                <CustomAvatar size="normal">
-                  <img src={nextAppointments?.user.avatar_url} alt="Usuario" />
-                </CustomAvatar>
-                <strong>{nextAppointments?.user.name}</strong>
-                <span>
-                  <FiClock />
-                  {nextAppointments?.formatedHour}
-                </span>
-              </div>
-            </NextAppointments>
-          )}
-          <Section>
-            <strong>Tarde</strong>
-            {!afternoonAppointments.length && (
-              <p>Nenhum agendamento para a tarde</p>
-            )}
-            {afternoonAppointments.map(appointment => (
-              <Appointment key={appointment.id}>
-                <span>
-                  <FiClock />
-                  {appointment.formatedHour}
-                </span>
-                <div>
-                  <CustomAvatar size="small">
-                    <img src={appointment.user.avatar_url} alt="Usuario" />
-                  </CustomAvatar>
-                  <strong>{appointment.user.name}</strong>
-                </div>
-              </Appointment>
-            ))}
-          </Section>
-          <Section>
-            <strong>Manhã</strong>
-            {!afternoonAppointments.length && (
-              <p>Nenhum agendamento para a manhã</p>
-            )}
-            {morningAppointments.map(appointment => (
-              <Appointment key={appointment.id}>
-                <span>
-                  <FiClock />
-                  {appointment.formatedHour}
-                </span>
-                <div>
-                  <CustomAvatar size="small">
-                    <img src={appointment.user.avatar_url} alt="Usuario" />
-                  </CustomAvatar>
-                  <strong>{appointment.user.name}</strong>
-                </div>
-              </Appointment>
-            ))}
-          </Section>
-        </Schedule>
-        <Calendar>
-          <DayPicker
-            onMonthChange={handleMonthChange}
-            selectedDays={selectedDate}
-            fromMonth={new Date()}
-            disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
-            modifiers={{
-              available: { daysOfWeek: [1, 2, 3, 4, 5] },
-            }}
-            onDayClick={handleDateChange}
-            weekdaysShort={datesUtils.days}
-            months={datesUtils.months}
-          />
-        </Calendar>
-      </Content>
     </Container>
   );
 };
 
-export default Dashboard;
+export default ProfilePage;
