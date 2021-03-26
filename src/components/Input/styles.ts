@@ -5,6 +5,7 @@ interface ContainerProps {
   isFocused: boolean;
   isFilled: boolean;
   isErrored: boolean;
+  marginTop?: boolean;
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -20,6 +21,12 @@ export const Container = styled.div<ContainerProps>`
   & + div {
     margin-top: 8px;
   }
+
+  ${props =>
+    props.marginTop &&
+    css`
+      margin-top: 24px !important;
+    `}
 
   ${props =>
     props.isErrored &&
@@ -39,8 +46,6 @@ export const Container = styled.div<ContainerProps>`
       color: #ff9000;
     `}
 
-
-
   input {
     flex: 1;
     background: transparent;
@@ -55,6 +60,7 @@ export const Container = styled.div<ContainerProps>`
     margin-right: 16px;
   }
 `;
+
 export const Error = styled(Tooltipe)`
   max-height: 20px;
   margin-left: 16px;
