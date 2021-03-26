@@ -3,7 +3,7 @@ import { FiPower, FiClock } from 'react-icons/fi';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import { isToday, format, parseISO, isAfter } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import {
   Container,
@@ -33,6 +33,8 @@ interface MonthAvailabilityItem {
 
 const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
+
+  const { push } = useHistory();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -144,7 +146,11 @@ const Dashboard: React.FC = () => {
         <HeaderContent>
           <img src={logoImg} alt="GoBarber" />
           <Profile>
-            <CustomAvatar size="small">
+            <CustomAvatar
+              onClick={() => push('/profile')}
+              size="small"
+              interactiveProps={{ text: 'Editar' }}
+            >
               <img src={user.avatar_url} alt={user.name} />
             </CustomAvatar>
             <div>
