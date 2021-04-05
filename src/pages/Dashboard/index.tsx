@@ -71,7 +71,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     api
-      .get<IAppointments[]>('/appointments/me', {
+      .get<IAppointments[]>('/appointments/providers/me', {
         params: {
           year: selectedDate.getFullYear(),
           month: selectedDate.getMonth() + 1,
