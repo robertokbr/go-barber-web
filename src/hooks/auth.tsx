@@ -1,4 +1,6 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
+import { isAfter } from 'date-fns';
+
 import IUser from '../models/IUser';
 import api from '../services/api';
 
@@ -27,11 +29,18 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@GoBarber:token');
     const user = localStorage.getItem('@GoBarber:user');
+    const validation = localStorage.getItem('@GoBarber:validation');
 
-    if (token && user) {
-      api.defaults.headers.authorization = `Bearer ${token}`;
+    if (token && user && validation) {
+      const validationDate = new Date(JSON.parse(validation));
 
-      return { token, user: JSON.parse(user) };
+      validationDate.setHours(23, 59);
+
+      if (isAfter(validationDate, new Date())) {
+        api.defaults.headers.authorization = `Bearer ${token}`;
+
+        return { token, user: JSON.parse(user) };
+      }
     }
 
     return {} as AuthState;
@@ -47,6 +56,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     localStorage.setItem('@GoBarber:token', token);
     localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+    localStorage.setItem('@GoBarber:validation', JSON.stringify(new Date()));
 
     api.defaults.headers.authorization = `Bearer ${token}`;
 
@@ -56,6 +66,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signOut = useCallback(async () => {
     localStorage.removeItem('@GoBarber:token');
     localStorage.removeItem('@GoBarber:user');
+    localStorage.removeItem('@GoBarber:validation');
     setData({} as AuthState);
   }, []);
 
